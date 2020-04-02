@@ -1,0 +1,371 @@
+<!doctype html>
+<html lang="en.png">
+
+  <head>
+    <meta charset="utf-8">
+
+    <title>WebGL through Three JS</title>
+
+    <meta name="apple-mobile-web-app-capable" content="yes" />
+    <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent" />
+
+<!--    <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
+
+    <link rel="stylesheet" href="css/main.css">
+    <link rel="stylesheet" href="css/theme/default.css">
+    <link rel="stylesheet" href="css/custom.css">
+
+    <!-- For syntax highlighting -->
+    <link rel="stylesheet" href="lib/css/zenburn.css">
+    <link rel="stylesheet" href="css/gh-fork-ribbon.css">
+
+    <script>
+      // If the query includes 'print-pdf' we'll use the PDF print sheet
+      document.write( '<link rel="stylesheet" href="css/print/' + ( window.location.search.match( /print-pdf/gi ) ? 'pdf' : 'paper' ) + '.css" type="text/css" media="print">' );
+    </script>
+
+    <!--[if IE]>
+    <link rel="stylesheet" href="css/gh-fork-ribbon.ie.css">
+    <![endif]-->
+
+    <!--[if lt IE 9]>
+    <script src="lib/js/html5shiv.js"></script>
+    <![endif]-->
+  </head>
+
+  <body>
+
+    <script src="build/three.js"></script>
+    <script src="js/loaders/ColladaLoader.js"></script>
+    <script src="js/Detector.js"></script>
+
+	 <div id="background"/>
+<script>
+// RedHat background script
+// Added 6/Sep/2015 by John Boero - johnnyb@redhat.com
+var fedContainer;
+
+var fedCam, fedScene, fedRenderer;
+var target = new THREE.Vector3(-3, 3, 3);
+var particleLight, dae;
+var loader = new THREE.ColladaLoader();
+
+loader.options.convertUpAxis = true;
+
+// Use blue fedora model if Fedora
+// Note that I've not had good luck with json models. Use collada (dae).
+// You can import/edit/export from Blender.
+loader.load( 'models/hashicorp/hashicorp.dae', 
+	function ( collada )
+	{
+		dae = collada.scene;
+
+		dae.scale.x = dae.scale.y = dae.scale.z = 4;
+		dae.updateMatrix();
+	
+		fedInit();
+		fedAnimate();
+	}
+);
+
+function fedInit()
+{
+	fedContainer = document.getElementById( 'background' );
+
+	fedCam = new THREE.PerspectiveCamera( 45, window.innerWidth / window.innerHeight, 1, 2000 );
+	fedCam.position.set( 2, 2, 3 );
+
+	fedScene = new THREE.Scene();
+	fedScene.add( dae );
+
+	particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
+	particleLight.intensity = 2;
+	fedScene.add( particleLight );
+
+	fedScene.add( new THREE.AmbientLight( 0x040404 ) );
+
+	var directionalLight = new THREE.DirectionalLight( 0x888888 );
+	//var directionalLight = new THREE.HemisphereLight();
+	directionalLight.intensity = 2;
+	directionalLight.position.x = -1;
+	directionalLight.position.y = 1;
+	directionalLight.position.z = -1;
+	directionalLight.position.normalize();
+	fedScene.add( directionalLight );
+	
+	var pointLight = new THREE.PointLight( 0x444444, 4 );
+	pointLight.intensity=2;
+	particleLight.add( pointLight );
+
+	fedRenderer = new THREE.WebGLRenderer( {alpha:true} );
+	fedRenderer.setPixelRatio( window.devicePixelRatio );
+	fedRenderer.setSize( window.innerWidth, window.innerHeight );
+	fedRenderer.setClearColor( 0x101010 );
+	fedContainer.appendChild( fedRenderer.domElement );
+
+	window.addEventListener( 'resize', fedOnWindowResize, false );
+	fedCam.position.x = fedCam.position.y = fedCam.position.z = 7;
+}
+
+function fedOnWindowResize()
+{
+	fedCam.aspect = window.innerWidth / window.innerHeight;
+	fedCam.updateProjectionMatrix();
+
+	fedRenderer.setSize( window.innerWidth, window.innerHeight );
+}
+
+function fedAnimate()
+{
+	var timer = Date.now() * 0.0002;
+	requestAnimationFrame( fedAnimate );
+
+	fedCam.lookAt( target );
+
+	particleLight.position.x = Math.sin( timer / 8 ) * 3009;
+	particleLight.position.y = Math.cos( timer / 7 ) * 4000;
+	particleLight.position.z = Math.cos( timer / 6 ) * 3009;
+
+	dae.rotateZ(0.0008 * Math.sin(timer / 18));
+	dae.rotateY(0.0009 * Math.cos(timer / 25));
+	dae.rotateZ(0.0011 * Math.sin(timer / 30));
+
+	fedRender();
+}
+
+function fedRender()
+{
+	fedRenderer.render( fedScene, fedCam );
+}
+</script>
+
+    <div class="reveal">
+
+      <!-- Used to fade in a background when a specific slide state is reached -->
+      <div class="state-background"></div>
+
+      <!-- Any section element inside of this container is displayed as a slide -->
+      <div class="slides">
+
+<script>
+document.getElementById("jsStyle").innerHTML = `
+<style>
+img, video, iframe {
+    height: ${window.innerHeight * 0.8}px !important;
+    width: ${window.innerWidth * 0.8}px !important;
+}
+</style>`;
+</script>
+  <section>
+      <section style="top:-65%"><img src="images/hashicorp-1.webp"></section>
+      <section style="top:-65%"><img class="stretch" src="images/hashistack.webp"></section>
+      <section style="top:-65%"><img class="stretch" src="images/terraform.webp"></section>
+      <section style="top:-65%"><img class="stretch" src="images/consul-1.webp"></section>
+      <section style="top:-65%"><img class="stretch" src="images/vault.webp"></section>
+  </section>
+  <section>
+	  <section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/o9x9agDCoNc" width="1080" height="720"></iframe>
+	  </section>
+	  <section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/Imh6Qucx0Vo" width="1080" height="720"></iframe>
+	  </section>
+	  <section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/8T8t4-hQY74" width="1080" height="720"></iframe>
+	  </section>
+	  <section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/PqTYGQ7jJqU" width="1080" height="720"></iframe>
+	  </section>
+	  <section style="top:-20%">
+		<iframe src="https://www.youtube.com/embed/Y42hgiSvXfE" autoslide-data
+			width="1080" height="600"></iframe>
+	  </section>
+  </section>
+	<!-- end of deck -->
+	
+      </div>
+
+      <!-- The navigational controls UI -->
+      <aside class="controls">
+        <a class="left" href="#">&#x25C4;</a>
+        <a class="right" href="#">&#x25BA;</a>
+        <a class="up" href="#">&#x25B2;</a>
+        <a class="down" href="#">&#x25BC;</a>
+      </aside>
+
+      <!-- Presentation progress bar -->
+      <div class="progress"><span></span></div>
+    </div>
+
+    <!-- Shaders -->
+    <script id="webgl_vshader" type="x-shader/x-vertex">
+      uniform mat4 u_modelViewProjMatrix;
+      uniform mat4 u_normalMatrix;
+      uniform vec3 lightDir;
+
+      attribute vec3 vNormal;
+      attribute vec4 vColor;
+      attribute vec4 vPosition;
+
+      varying float v_Dot;
+      varying vec4 v_Color;
+
+      void main()
+      {
+          gl_Position = u_modelViewProjMatrix * vPosition;
+          v_Color = vec4(1 , 1, 1, 1);
+          vec4 transNormal = u_normalMatrix * vec4(vNormal, 1);
+          v_Dot = max(dot(transNormal.xyz, lightDir), 0.0);
+      }
+    </script>
+
+    <script id="webgl_fshader" type="x-shader/x-fragment">
+      precision mediump float;
+
+      varying float v_Dot;
+      varying vec4 v_Color;
+
+      void main()
+      {
+          gl_FragColor = vec4(v_Color.xyz * v_Dot, v_Color.a);
+      }
+    </script>
+
+    <script id="webgl_bland_fshader" type="x-shader/x-fragment">
+      precision mediump float;
+
+      varying float v_Dot;
+      varying vec4 v_Color;
+
+      void main()
+      {
+          gl_FragColor = vec4(1, 1, 1, 1);
+      }
+    </script>
+
+    <script id="normal_map_vs" type="x-shader/x-vertex">
+      attribute vec3 tangent;
+
+      varying vec4 vPositionV;
+      varying vec3 vNormalV;
+      varying vec3 vTangentV;
+      varying vec2 vTexCoord;
+
+      void main(void) {
+        gl_Position = projectionMatrix * modelViewMatrix * vec4(position, 1.0);
+        vPositionV = modelViewMatrix * vec4(position, 1.0);
+        vNormalV = (modelViewMatrix * vec4(normal, 0.0)).xyz;
+        vTangentV = (modelViewMatrix * vec4(tangent, 0.0)).xyz;
+        vTexCoord = uv;
+      }
+    </script>
+
+    <script id="normal_map_fs" type="x-shader/x-fragment">
+      #ifdef GL_ES
+      precision highp float;
+      #endif
+
+      uniform sampler2D map;
+      uniform float uTime;
+
+      varying vec4 vPositionV;
+      varying vec3 vNormalV;
+      varying vec3 vTangentV;
+      varying vec2 vTexCoord;
+
+      void main(void) {
+        vec3 normalT = texture2D(map, vTexCoord).xyz;
+        normalT.y = 1.0 - normalT.y;
+        normalT = 2.0 * normalT - vec3(1.0, 1.0, 1.0);
+        normalT.z *= 10.0;
+
+        vec3 binormalV = cross(vNormalV, vTangentV);
+        vec3 normalV = normalT.x * vTangentV + normalT.y * binormalV + normalT.z * vNormalV;
+
+        normalV = normalize(normalV);
+        vec3 lightV = normalize(vec3(10.0 * cos(uTime), 0.0, 10.0 * sin(uTime)));
+
+        float d = dot(normalV, lightV);
+        float s = dot(reflect(-lightV, normalV), normalize(-vPositionV.xyz));
+        s = pow(s, 30.0);
+
+        vec3 diffuse = vec3(1, 1, 1);
+        vec3 color = diffuse * (0.1 + 0.5 * d + 0.4 * s);
+
+        gl_FragColor = vec4(color, 1.0);
+      }
+    </script>
+
+
+    <script src="lib/js/head.min.js"></script>
+    <script>
+      head.js(
+        "lib/js/jquery.min.js",
+        "lib/js/jquery.hotkeys.js",
+        "lib/js/underscore.min.js",
+        "lib/js/swfobject.js",
+        "lib/js/dat.gui.js",
+        "lib/js/EventEmitter.js",
+
+        "lib/js/three/EffectComposer.js",
+        "lib/js/three/RenderPass.js",
+        "lib/js/three/BloomPass.js",
+        "lib/js/three/ShaderPass.js",
+        "lib/js/three/MaskPass.js",
+
+        // three shaders
+        "lib/js/three/shaders/CopyShader.js",
+        "lib/js/three/shaders/BasicShader.js",
+        "lib/js/three/shaders/DotScreenShader.js",
+        "lib/js/three/shaders/UnpackDepthRGBAShader.js",
+        "lib/js/three/shaders/HorizontalBlurShader.js",
+        "lib/js/three/shaders/VerticalBlurShader.js",
+
+        // js files needed for WebGL specific samples (excluding three js)
+        "lib/js/J3DI.js",
+        "lib/js/J3DIMath.js",
+        "lib/js/webgl-utils.js",
+        "lib/js/webgl-debug.js",
+
+        // App specific js
+        "js/reveal.min.js",
+        "js/stats_bootstrap.js",
+        "js/samples.js",
+        "js/dat.gui.bootstrap.js",
+
+        function() {
+          // Full list of configuration options available here:
+          // https://github.com/hakimel/reveal.js#configuration
+          Reveal.initialize({
+			margin: 0,
+//			minScale: 0.5,
+//			maxScale: 2,
+//			autoPlayMedia: null,
+            controls: true,
+            progress: true,
+            history: true,
+
+			// Adjust or comment this line for no auto-advance mode:
+			//autoSlide: 10000,
+			//autoSlideStoppable: true,
+			defaultTiming: 120,
+			loop: true,
+
+            transition: Reveal.getQueryHash().transition || 'default', // default/cube/page/concave/linear(2d)
+
+            // Optional libraries used to extend on reveal.js
+            dependencies: [
+              { src: 'lib/js/highlight.js', async: true, callback: function() { window.hljs.initHighlightingOnLoad(); } },
+              { src: 'lib/js/classList.js', condition: function() { return !document.body.classList; } },
+              { src: 'lib/js/showdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+              { src: 'lib/js/data-markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+              { src: 'socket.io/socket.io.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } },
+              { src: 'plugin/speakernotes/client.js', async: true, condition: function() { return window.location.host === 'localhost:1947'; } },
+              { src: 'js/youtube.js', async: true, condition: function() { return $("#ytplayer").length > 0 } },
+            ]
+          });
+        });
+
+    </script>
+  </body>
+</html>
