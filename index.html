@@ -157,7 +157,46 @@ img, video, iframe {
 </style>`;
 </script>
   <section>
-      <section style="top:-65%"><img src="images/hashicorp-1.webp"></section>
+      <section style="top:-30%"><h3>
+      Jun 22, 2020<br>
+      Hashiconf EU Virtual 2020<br>
+		<iframe width="1200" height="600" src="https://www.youtube.com/embed/dXcuYOGvcrE?autoplay=1&mute=1&list=PL81sUbsFNc5bfyi8epqjArjIYrSk2-PET"
+       frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <p><h6>Hit [SPACE] to continue. [ESC] for Menu.
+      <div class="progress" id="countdown"></div></h6>
+<script>
+// Set the date we're counting down to
+var countDownDate = new Date("Jun 22, 2020 09:00:00").getTime();
+
+// Update the count down every 1 second
+var x = setInterval(function() {
+
+  // Get today's date and time
+  var now = new Date().getTime();
+
+  // Find the distance between now and the count down date
+  var distance = countDownDate - now;
+
+  // Time calculations for days, hours, minutes and seconds
+  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
+  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+  // Display the result in the element with id="demo"
+  document.getElementById("countdown").innerHTML = days + "D " + hours + ":"
+  + minutes + ":" + seconds;
+
+  // If the count down is finished, write some text
+  if (distance < 0) {
+    clearInterval(x);
+    document.getElementById("countdown").innerHTML = "EXPIRED";
+  }
+}, 1000);
+</script>
+
+      </section>
+      <section style="top:-50%"><img class="stretch" src="images/schedule.webp"></section>
       <section style="top:-65%"><img class="stretch" src="images/hashistack.webp"></section>
       <section style="top:-65%"><img class="stretch" src="images/terraform.webp"></section>
       <section style="top:-65%"><img class="stretch" src="images/consul-1.webp"></section>
@@ -165,20 +204,20 @@ img, video, iframe {
   </section>
   <section>
 	  <section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/o9x9agDCoNc" width="1080" height="720"></iframe>
+		<iframe src="https://www.youtube.com/embed/slaAnoxOM_Y" width="1200" height="600"></iframe>
 	  </section>
 	  <section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/Imh6Qucx0Vo" width="1080" height="720"></iframe>
+		<iframe src="https://www.youtube.com/embed/Imh6Qucx0Vo" width="1200" height="600"></iframe>
 	  </section>
 	  <section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/8T8t4-hQY74" width="1080" height="720"></iframe>
+		<iframe src="https://www.youtube.com/embed/8T8t4-hQY74" width="1200" height="600"></iframe>
 	  </section>
 	  <section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/PqTYGQ7jJqU" width="1080" height="720"></iframe>
+		<iframe src="https://www.youtube.com/embed/PqTYGQ7jJqU" width="1200" height="600"></iframe>
 	  </section>
 	  <section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/Y42hgiSvXfE" autoslide-data
-			width="1080" height="600"></iframe>
+		<iframe src="https://www.youtube.com/embed/Y42hgiSvXfE"
+			width="1200" height="600"></iframe>
 	  </section>
   </section>
 	<!-- end of deck -->
@@ -340,7 +379,7 @@ img, video, iframe {
 			margin: 0,
 //			minScale: 0.5,
 //			maxScale: 2,
-//			autoPlayMedia: null,
+    			autoPlayMedia: null,
             controls: true,
             progress: true,
             history: true,
