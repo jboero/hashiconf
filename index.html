@@ -168,6 +168,12 @@ img, video, iframe {
 // Set the date we're counting down to
 var countDownDate = new Date("Jun 22, 2020 09:00:00").getTime();
 
+Number.prototype.pad = function(size) {
+    var s = String(this);
+    while (s.length < (size || 2)) {s = "0" + s;}
+    return s;
+}
+
 // Update the count down every 1 second
 var x = setInterval(function() {
 
@@ -185,7 +191,7 @@ var x = setInterval(function() {
 
   // Display the result in the element with id="demo"
   document.getElementById("countdown").innerHTML = days + "D " + hours + ":"
-  + minutes + ":" + seconds;
+  + (minutes).pad() + ":" + (seconds).pad();
 
   // If the count down is finished, write some text
   if (distance < 0) {
