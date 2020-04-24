@@ -155,6 +155,7 @@ body {
 
 .reveal .progress {
 	background: rgba(0,0,0,0.2);
+	font-family: Monaco, monospace;
 }
 	.reveal .progress span {
 		background: hsl(185, 85%, 50%);
