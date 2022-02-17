@@ -12,7 +12,7 @@
 <!--    <link href='http://fonts.googleapis.com/css?family=Lato:400,700,400italic,700italic' rel='stylesheet' type='text/css'> -->
 
     <link rel="stylesheet" href="css/main.css">
-    <link rel="stylesheet" href="css/theme/default.css">
+    <link rel="stylesheet" href="css/theme/simple.css">
     <link rel="stylesheet" href="css/custom.css">
 
     <!-- For syntax highlighting -->
@@ -55,12 +55,12 @@ loader.options.convertUpAxis = true;
 // Use blue fedora model if Fedora
 // Note that I've not had good luck with json models. Use collada (dae).
 // You can import/edit/export from Blender.
-loader.load( 'models/hashicorp/hashicorp.dae', 
+loader.load( 'models/nomad.dae', 
 	function ( collada )
 	{
 		dae = collada.scene;
 
-		dae.scale.x = dae.scale.y = dae.scale.z = 4;
+		dae.scale.x = dae.scale.y = dae.scale.z = 20;
 		dae.updateMatrix();
 	
 		fedInit();
@@ -78,11 +78,11 @@ function fedInit()
 	fedScene = new THREE.Scene();
 	fedScene.add( dae );
 
-	particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
-	particleLight.intensity = 2;
-	fedScene.add( particleLight );
+	//particleLight = new THREE.Mesh( new THREE.SphereGeometry( 4, 8, 8 ), new THREE.MeshBasicMaterial( { color: 0x333333 } ) );
+	//particleLight.intensity = 2;
+	//fedScene.add( particleLight );
 
-	fedScene.add( new THREE.AmbientLight( 0x040404 ) );
+	fedScene.add( new THREE.AmbientLight( 0x808080 ) );
 
 	var directionalLight = new THREE.DirectionalLight( 0x888888 );
 	//var directionalLight = new THREE.HemisphereLight();
@@ -93,14 +93,14 @@ function fedInit()
 	directionalLight.position.normalize();
 	fedScene.add( directionalLight );
 	
-	var pointLight = new THREE.PointLight( 0x444444, 4 );
-	pointLight.intensity=2;
-	particleLight.add( pointLight );
+	//var pointLight = new THREE.PointLight( 0x444444, 4 );
+	//pointLight.intensity=2;
+	//particleLight.add( pointLight );
 
 	fedRenderer = new THREE.WebGLRenderer( {alpha:true} );
 	fedRenderer.setPixelRatio( window.devicePixelRatio );
 	fedRenderer.setSize( window.innerWidth, window.innerHeight );
-	fedRenderer.setClearColor( 0x101010 );
+	fedRenderer.setClearColor( 0xDDDDDD );
 	fedContainer.appendChild( fedRenderer.domElement );
 
 	window.addEventListener( 'resize', fedOnWindowResize, false );
@@ -122,9 +122,9 @@ function fedAnimate()
 
 	fedCam.lookAt( target );
 
-	particleLight.position.x = Math.sin( timer / 8 ) * 3009;
-	particleLight.position.y = Math.cos( timer / 7 ) * 4000;
-	particleLight.position.z = Math.cos( timer / 6 ) * 3009;
+	//particleLight.position.x = Math.sin( timer / 8 ) * 3009;
+	//particleLight.position.y = Math.cos( timer / 7 ) * 4000;
+	//particleLight.position.z = Math.cos( timer / 6 ) * 3009;
 
 	dae.rotateZ(0.0008 * Math.sin(timer / 18));
 	dae.rotateY(0.0009 * Math.cos(timer / 25));
@@ -147,7 +147,8 @@ function fedRender()
       <!-- Any section element inside of this container is displayed as a slide -->
       <div class="slides">
 
-<script>
+<!--
+  <script>
 document.getElementById("jsStyle").innerHTML = `
 <style>
 img, video, iframe {
@@ -156,77 +157,24 @@ img, video, iframe {
 }
 </style>`;
 </script>
+-->
+	<!-- start deck -->
   <section>
-      <section style="top:-35%"><h3>
-      Jun 22, 2020<br>
-      Hashiconf EU Digital</h3><br>
-		<iframe width="1200" height="600" src="https://www.youtube.com/embed/dXcuYOGvcrE?autoplay=1&mute=1&list=PL81sUbsFNc5bfyi8epqjArjIYrSk2-PET&shuffle=1"
-       frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
-      <p><h5>Hit [SPACE] to continue. [ESC] for Menu. <br><a href="https://github.com/jboero/hashiconf/blob/master/index.html">PRs Welcome</a></h5>
-      <div class="progress" id="countdown"></div></h6>
-<script>
-// Set the date we're counting down to
-var countDownDate = new Date("Jun 22, 2020 09:00:00").getTime();
-
-Number.prototype.pad = function(size) {
-    var s = String(this);
-    while (s.length < (size || 2)) {s = "0" + s;}
-    return s;
-}
-
-// Update the count down every 1 second
-var x = setInterval(function() {
-
-  // Get today's date and time
-  var now = new Date().getTime();
-
-  // Find the distance between now and the count down date
-  var distance = countDownDate - now;
-
-  // Time calculations for days, hours, minutes and seconds
-  var days = Math.floor(distance / (1000 * 60 * 60 * 24));
-  var hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-  var minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-  var seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-  // Display the result in the element with id="demo"
-  document.getElementById("countdown").innerHTML = days + "D " + hours + ":"
-  + (minutes).pad() + ":" + (seconds).pad();
-
-  // If the count down is finished, write some text
-  if (distance < 0) {
-    clearInterval(x);
-    document.getElementById("countdown").innerHTML = "EXPIRED";
-  }
-}, 1000);
-</script>
-
+      <section><h3>
+        <img src="images/idea.webp" height=256><br>
+        Nomad as a HashiCorp Operating System<h6>
+        HashiTalks 2022 - John Boero <img src="images/headshot_transp.webp" style="border:0" height=128> 
       </section>
-      <section style="top:-50%"><img class="stretch" src="images/schedule.webp"></section>
-      <section style="top:-65%"><img class="stretch" src="images/hashistack.webp"></section>
-      <section style="top:-65%"><img class="stretch" src="images/terraform.webp"></section>
-      <section style="top:-65%"><img class="stretch" src="images/consul-1.webp"></section>
-      <section style="top:-65%"><img class="stretch" src="images/vault.webp"></section>
+      <section style="top:-40%;left:-10%"><img class="stretch" src="images/slide1.svg"></section>
+      <section style="top:-40%;left:-10%"><img class="stretch" src="images/slide2.svg"></section>
+      <section style="top:-40%;left:-10%"><img class="stretch" src="images/slide3.svg"></section>
+      <section style="top:-40%;left:-10%"><img class="stretch" src="images/slide4.svg"></section>
+      <section style="top:-40%;left:-10%"><img class="stretch" src="images/slide5.svg"></section>
+      <section style="top:-40%;left:-10%"><img class="stretch" src="images/slide6.svg"></section>
+      
   </section>
-  <section>
-	  <section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/JKUuGK-UpWo?list=PL81sUbsFNc5YlhsTWvkg5I8TkGap0GuO" width="1200" height="600"></iframe>
-	  </section>
-	  <section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/Imh6Qucx0Vo" width="1200" height="600"></iframe>
-	  </section>
-	  <section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/8T8t4-hQY74" width="1200" height="600"></iframe>
-	  </section>
-	  <section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/PqTYGQ7jJqU" width="1200" height="600"></iframe>
-	  </section>
-	  <section style="top:-20%">
-		<iframe src="https://www.youtube.com/embed/Y42hgiSvXfE"
-			width="1200" height="600"></iframe>
-	  </section>
-  </section>
-	<!-- end of deck -->
+
+  <!-- end of deck -->
 	
       </div>
 
